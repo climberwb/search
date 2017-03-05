@@ -108,7 +108,6 @@ def depthFirstSearch(problem):
   #       problem.actions += [direction[1]]
   #     else:
   #       problem.actions = [direction[1
-
   if problem.isGoalState(problem.getStartState()):
     return []
  
@@ -160,16 +159,21 @@ def breadthFirstSearch(problem):
   [2nd Edition: p 73, 3rd Edition: p 82]
   """
   "*** YOUR CODE HERE ***"
-  """
-  Search the shallowest nodes in the search tree first.
-  [2nd Edition: p 73, 3rd Edition: p 82]
-  """
-  "*** YOUR CODE HERE ***"
+  # print "Start:", problem.getStartState()
+  # print "Is the start a goal?", problem.isGoalState(problem.getStartState())
+  # print "Start's successors:", problem.getSuccessors(problem.getStartState())
+  # print(dir(problem))
+  # from game import Directions
+  # s = Directions.SOUTH
+  # w = Directions.WEST
+  # return  [s,s,w,s,w,w,s,w]
+  # if problem.isGoalState(problem.getStartState()):
+  #   return []
  
   # frontier = util.Stack()
   frontier = []
   visited = set()
-  start_state = problem.startingPosition #
+  start_state = problem.getStartState() #
   frontier.append(start_state)# [((1,4),...]
   visited.add(start_state)
   path={}
@@ -182,15 +186,27 @@ def breadthFirstSearch(problem):
     for parent in parents:  
       successor_states = problem.getSuccessors(parent)
       for child_state in successor_states:
+        ############
+        print('in for')
+        ###########
+        # TODO 1. nested for loop that goes over all
+        #      2. loops over children of frontier
+        #      3. adds children to frontier unless children have been visted
+        #      4. adds action to path 
         pos,action,cost = child_state
         if pos in visited:
           continue
         visited.add(pos)
         path[child_state[0]] = (parent,child_state[1])
- 
+           #child_state
+        # print visited
         if problem.isGoalState(pos):
+          print("goal!!")
           path_arr=[]
           current_node = child_state[0]
+          import pprint
+          pp = pprint.PrettyPrinter(indent=4)
+          print  pp.pprint(path)
           while start_state != current_node:
           # for i in range(0,10):
             # print 'iter'
@@ -201,11 +217,10 @@ def breadthFirstSearch(problem):
           # print path_arr
           return path_arr[::-1]
         # print(pos,problem.getSuccessors(problem.getStartState())[::-1])
+          print('in for')
         frontier.append(pos)
 
   util.raiseNotDefined()
-
-  # util.raiseNotDefined()
       
 def uniformCostSearch(problem):
   "Search the node of least total cost first. "
