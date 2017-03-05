@@ -108,6 +108,7 @@ def depthFirstSearch(problem):
   #       problem.actions += [direction[1]]
   #     else:
   #       problem.actions = [direction[1
+
   if problem.isGoalState(problem.getStartState()):
     return []
  
@@ -159,27 +160,19 @@ def breadthFirstSearch(problem):
   [2nd Edition: p 73, 3rd Edition: p 82]
   """
   "*** YOUR CODE HERE ***"
-  # print "Start:", problem.getStartState()
-  # print "Is the start a goal?", problem.isGoalState(problem.getStartState())
-  # print "Start's successors:", problem.getSuccessors(problem.getStartState())
-  # print(dir(problem))
-  # from game import Directions
-  # s = Directions.SOUTH
-  # w = Directions.WEST
-  # return  [s,s,w,s,w,w,s,w]
-  # if problem.isGoalState(problem.getStartState()):
-  #   return []
+  """
+  Search the shallowest nodes in the search tree first.
+  [2nd Edition: p 73, 3rd Edition: p 82]
+  """
+  "*** YOUR CODE HERE ***"
  
   # frontier = util.Stack()
   frontier = []
   visited = set()
-  start_state = (problem.getStartState(),None) #
-
+  start_state = problem.startingPosition #
   frontier.append(start_state)# [((1,4),...]
   visited.add(start_state)
   path={}
- 
-  # child_id = 1
   while frontier !=[]:
    #########################
     parents = frontier
@@ -187,62 +180,30 @@ def breadthFirstSearch(problem):
 
    #########################
     for parent in parents:  
-      
-      print parents
-      parent,parent_action =parent
-       # = parent[1]
-      print parent, parent_action
-      print 'parent',parent,parent_action
-      print 'successors', problem.getSuccessors(parent)
       successor_states = problem.getSuccessors(parent)
-
-
       for child_state in successor_states:
-        print('child state',child_state) 
-        ############
-        # print('in for')
-        ###########
-        # TODO 1. nested for loop that goes over all
-        #      2. loops over children of frontier
-        #      3. adds children to frontier unless children have been visted
-        #      4. adds action to path 
         pos,action,cost = child_state
-        print 'child_state', pos,action,cost
-        if (pos,action) in visited:
+        if pos in visited:
           continue
-        visited.add((pos,action))
-        path[((pos,action))] = (parent,parent_action)
-           #child_state
-        # print visited
-        
-        print('goal function', problem.isGoalState(pos) )
+        visited.add(pos)
+        path[child_state[0]] = (parent,child_state[1])
+ 
         if problem.isGoalState(pos):
-          import pprint
-          pp = pprint.PrettyPrinter(indent=4)
-          print pp.pprint(path)
-          print("goal!!")
           path_arr=[]
-          current_node = (pos,action)
-          path_arr.append(action)
-          # import pprint
-          # pp = pprint.PrettyPrinter(indent=4)
-          # print  pp.pprint(path)
-          while start_state != path[current_node]:
+          current_node = child_state[0]
+          while start_state != current_node:
           # for i in range(0,10):
             # print 'iter'
             direction = path[current_node][1]
             # print direction , parent
-            print current_node
-            # if current_node[1] == None:
             path_arr.append(direction)
-            current_node = path[current_node]
-            print 'curren ddt_node',current_node, current_node != start_state
-          # print path_ar
-          new_path = path_arr[::-1]
-          print new_path
-          return new_path
+            current_node = path[current_node][0]
+          # print path_arr
+          return path_arr[::-1]
         # print(pos,problem.getSuccessors(problem.getStartState())[::-1])
-        frontier.append((pos,action))
+        frontier.append(pos)
+
+  util.raiseNotDefined()
 
   # util.raiseNotDefined()
       
