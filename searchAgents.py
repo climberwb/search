@@ -371,7 +371,7 @@ def cornersHeuristic(state, problem):
     distances = sorted([ (x-corners[i][0])^2 + (y-corners[i][1])^2 for i in indices ])
   else:
     distances = sorted([ (x-corners[i][0])^2 + (y-corners[i][1])^2 for i in range(0,len(corners)) ])
-  return distances # Default to trivial solution
+  return distances[0] # Default to trivial solution
 
 class AStarCornersAgent(SearchAgent):
   "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
