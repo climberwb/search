@@ -368,9 +368,9 @@ def cornersHeuristic(state, problem):
   x,y = pos 
   if corner_state !=(0,0,0,0):
     indices = [i for i, x in enumerate(corner_state) if x == 1]
-    distances = sorted([ (x-corners[i][0])^2 + (y-corners[i][1])^2 for i in indices ])
+    distances = sorted([ (x-corners[i][0])**2 + (y-corners[i][1])**2 for i in indices ])
   else:
-    distances = sorted([ (x-corners[i][0])^2 + (y-corners[i][1])^2 for i in range(0,len(corners)) ])
+    distances = sorted([ (x-corners[i][0])**2 + (y-corners[i][1])**2 for i in range(0,len(corners)) ])
   return distances[0] # Default to trivial solution
 
 class AStarCornersAgent(SearchAgent):
@@ -462,7 +462,16 @@ def foodHeuristic(state, problem):
   """
   position, foodGrid = state
   "*** YOUR CODE HERE ***"
-  return 0
+  food_coords = foodGrid.asList()
+  x,y = position 
+  # return 0
+  if food_coords == []:
+    return 0
+  distances =sorted( [(x-f_coord[0])**2 + (y-f_coord[1])**2 for f_coord in food_coords])
+  closest_food= distances[0]
+  print distances[:4]
+  # food_coords.remove(closest_food)
+  return closest_food
   
 class ClosestDotSearchAgent(SearchAgent):
   "Search for all food using a sequence of searches"
