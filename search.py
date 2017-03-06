@@ -228,40 +228,38 @@ def uniformCostSearch(problem):
   frontier = util.PriorityQueue()
   visited = set()
   start_state = problem.getStartState() #
-
   frontier.push(start_state,0)# [((1,4),...]
-  print frontier.heap
   visited.add(start_state)
   path={}
   while not frontier.isEmpty():
    #########################
-    parents = frontier.heap
+    # parents = frontier.heap
     # frontier = util.PriorityQueue()
    #########################
-    for parent in parents:  
-      parent = frontier.pop()
-      successor_states = problem.getSuccessors(parent)
-      # successor_states_ordered = sorted(successor_states, key=lambda tup: tup[2])
+    # for parent in parents:  
+    parent = frontier.pop()
+    successor_states = problem.getSuccessors(parent)
+    # successor_states_ordered = sorted(successor_states, key=lambda tup: tup[2])
+    
+    for child_state in successor_states:
+      pos,action,cost = child_state
+      if pos in visited:
+        continue
+      visited.add(pos)
+      path[child_state[0]] = (parent,child_state[1])
+      frontier.push(pos,cost)
+      if problem.isGoalState(pos):
+        print 'here!'
+        path_arr=[]
+        current_node = child_state[0]
+
+        while start_state != current_node:
+
+          direction = path[current_node][1]
+          path_arr.append(direction)
+          current_node = path[current_node][0]
+        return path_arr[::-1]
       
-      for child_state in successor_states:
-        pos,action,cost = child_state
-
-        if pos in visited:
-          continue
-        visited.add(pos)
-        path[child_state[0]] = (parent,child_state[1])
-        if problem.isGoalState(pos):
-          print 'here!'
-          path_arr=[]
-          current_node = child_state[0]
-  
-          while start_state != current_node:
-
-            direction = path[current_node][1]
-            path_arr.append(direction)
-            current_node = path[current_node][0]
-          return path_arr[::-1]
-        frontier.push(pos,cost)
 
 def nullHeuristic(state, problem=None):
   """
@@ -294,7 +292,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
       for child_state in successor_states:
         pos,action,cost = child_state
         ### create new a-star cost
-        cost = heuristic(pos,problem)
+        cost += heuristic(pos,problem)
         if pos in visited:
           continue
         visited.add(pos)
