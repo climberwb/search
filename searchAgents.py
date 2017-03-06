@@ -467,12 +467,29 @@ def foodHeuristic(state, problem):
   # return 0
   if food_coords == []:
     return 0
-  distances =sorted( [(x-f_coord[0])**2 + (y-f_coord[1])**2 for f_coord in food_coords])
+  def sign(x):
+    if x > 0:
+        return 1
+    elif x < 0:
+        return -1
+    elif x == 0:
+        return 0
+    else:
+        return x
+  # for direction in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
+  #     dx, dy = Actions.directionToVector(direction)
+  #     nextx, nexty = int(x + dx), int(y + dy)
+  #     if not self.walls[nextx][nexty]: 
+  # dx, dy = Actions.directionToVector(direction)
+  distances =sorted( [   (x-f_coord[0])**2 + (y-f_coord[1])**2 if ((y-f_coord[1] ==0 and x-f_coord[0]!=0) or (x-f_coord[0]==0 and y-f_coord[1] !=0)) and not problem.walls[f_coord[0]+sign(x)][f_coord[1]+sign(y)] else 1000 for f_coord in food_coords ])
+
+  if distances == []:
+    return 1000
   closest_food= distances[0]
-  print distances[:4]
+  # print distances[:3]
   # food_coords.remove(closest_food)
-  return closest_food
-  
+  distances = [ distance/((i+1)**6)  for i,distance in enumerate(distances)]
+  return sum(distances)
 class ClosestDotSearchAgent(SearchAgent):
   "Search for all food using a sequence of searches"
   def registerInitialState(self, state):
@@ -499,7 +516,26 @@ class ClosestDotSearchAgent(SearchAgent):
     problem = AnyFoodSearchProblem(gameState)
 
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    food_coords = food.asList()
+    # print gameState.getPacmanPosition()
+    # x,y = gameState.getPacmanPosition()
+    return 0
+    # return 0
+    # if food_coords == []:
+    #   return 0
+
+    # # for direction in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
+    # #     dx, dy = Actions.directionToVector(direction)
+    # #     nextx, nexty = int(x + dx), int(y + dy)
+    # #     if not self.walls[nextx][nexty]: 
+    # # dx, dy = Actions.directionToVector(direction)
+    # distances =sorted( [(x-f_coord[0])**2 + (y-f_coord[1])**2 for f_coord in food_coords ])
+    # if distances == []:
+    #   return 0
+    # closest_food= distances[0]
+    # # print distances[:3]
+    # # food_coords.remove(closest_food)
+    # return closest_food
   
 class AnyFoodSearchProblem(PositionSearchProblem):
   """
