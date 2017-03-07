@@ -514,28 +514,16 @@ class ClosestDotSearchAgent(SearchAgent):
     food = gameState.getFood()
     walls = gameState.getWalls()
     problem = AnyFoodSearchProblem(gameState)
-
+    
     "*** YOUR CODE HERE ***"
-    food_coords = food.asList()
-    # print gameState.getPacmanPosition()
-    # x,y = gameState.getPacmanPosition()
-    return 0
-    # return 0
-    # if food_coords == []:
-    #   return 0
+    problem.isGoalState(startPosition)
+    from search import breadthFirstSearch
+    return breadthFirstSearch(problem)
+    # print'in path',food.asList()
+    # food_coords = food.asList()
+    # pronlem
+   
 
-    # # for direction in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
-    # #     dx, dy = Actions.directionToVector(direction)
-    # #     nextx, nexty = int(x + dx), int(y + dy)
-    # #     if not self.walls[nextx][nexty]: 
-    # # dx, dy = Actions.directionToVector(direction)
-    # distances =sorted( [(x-f_coord[0])**2 + (y-f_coord[1])**2 for f_coord in food_coords ])
-    # if distances == []:
-    #   return 0
-    # closest_food= distances[0]
-    # # print distances[:3]
-    # # food_coords.remove(closest_food)
-    # return closest_food
   
 class AnyFoodSearchProblem(PositionSearchProblem):
   """
@@ -569,10 +557,13 @@ class AnyFoodSearchProblem(PositionSearchProblem):
     that will complete the problem definition.
     """
     x,y = state
-    
+    print 'in goal'
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
-
+    # util.raiseNotDefined()
+    if state in self.food.asList():
+      print 'in'
+      return True
+    return False
 ##################
 # Mini-contest 1 #
 ##################
